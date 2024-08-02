@@ -7,7 +7,7 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository){}
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return this.userRepository.create(createUserDto)
   }
 
   findAll() {
@@ -19,10 +19,13 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update(id, updateUserDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.remove(id);
+  }
+  findOneByEmail(email:string ){
+    return this.userRepository.findOneByEmail(email);
   }
 }

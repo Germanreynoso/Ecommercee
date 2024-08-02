@@ -1,12 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { userResponseDTO } from 'src/users/dto/response-user.dto';
+import { UsersService } from 'src/users/users.service';
+import { SignInAuthDto } from './dto/signin.dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(private readonly userService: UsersService){}
+    signIn(credentials: SignInAuthDto){
+      const user = this.userService.findOneByEmail(credentials.email)
+      if (user && user.password === credentials.password){
+        return "You are Logged in! "
+      }
+      return 'Email or password incorrect. Please try again'
+    }
 
   findAll() {
     return `This action returns all auth`;
