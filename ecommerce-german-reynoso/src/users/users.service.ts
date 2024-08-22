@@ -1,31 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersRepository } from './users.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { userResponseDTO } from './dto/response-user.dto'; // Asegúrate de que este archivo exporte `userResponseDTO`
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UsersRepository){}
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.create(createUserDto)
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = this.userRepository.create(createUserDto);
+    return this.userRepository.save(newUser);
+  }
+  async findAll(page: number, limit: number): Promise<User[]> {
+    return this.userRepository.find({
+      take: limit,
+      skip: (page - 1) * limit,
+    });
   }
 
-  findAll() {
-    return this.userRepository.findAll();
+
+  async findOne(id: string): Promise<User> {
+    return this.userRepository.findOneBy({ id });
   }
 
-  findOne(id: number) {
-    return this.userRepository.findOne(id);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    await this.userRepository.update(id, updateUserDto);
+    return this.userRepository.findOneBy({ id });
+  }
+  async remove(id: number): Promise<void> {
+    await this.userRepository.delete(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto)
+  async findOneByEmail(email: string): Promise<User> {
+    return this.userRepository.findOneBy({ email });
   }
 
-  remove(id: number) {
-    return this.userRepository.remove(id);
-  }
-  findOneByEmail(email:string ){
-    return this.userRepository.findOneByEmail(email);
+  async updateUser(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<userResponseDTO> {
+    await this.userRepository.update(id, updateUserDto);
+    const updatedUser = await this.userRepository.findOneBy({ id });
+    
+    return new userResponseDTO(updatedUser);
   }
 }

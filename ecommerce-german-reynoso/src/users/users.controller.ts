@@ -16,7 +16,7 @@ export class UsersController {
       @Query('page') page : number = 1,
       @Query('limite') limite :  number = 10,
     ) {
-      return this.usersService.findAll();
+      return this.usersService.findAll(page,limite);
     }
 
   @Post()
@@ -28,15 +28,14 @@ export class UsersController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  findOne(@Param('id') id: string) {
-    const user = this.usersService.findOne(+id);
-    return new userResponseDTO(user)
-    }
-
+  async findOne(@Param('id') id: string) {
+    const user = await this.usersService.findOne(id); // Await the promise to get the actual user
+    return new userResponseDTO(user); // Create the response DTO with the resolved user
+  }
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
