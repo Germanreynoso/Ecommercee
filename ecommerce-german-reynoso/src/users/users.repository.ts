@@ -64,7 +64,8 @@ export class UsersRepository {
     create(createUserDto: CreateUserDto) {
         const newUser = {
             id: this.users.length + 1,
-            ...createUserDto
+            ...createUserDto,
+            country: createUserDto.country || 'N/A',  // Si 'country' no se pasa, se puede establecer un valor predeterminado
         };
         this.users.push(newUser);
         return newUser.id;

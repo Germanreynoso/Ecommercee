@@ -20,7 +20,7 @@ export class User {
   country: string;
 
   @Column({ nullable: true })
-  cit: string;
+  city: string;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];

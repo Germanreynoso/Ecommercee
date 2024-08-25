@@ -1,45 +1,41 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus,HttpException, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { userResponseDTO } from './dto/response-user.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { ParseUUIDPipe } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   
-    @Get()
-  
-    @HttpCode(HttpStatus.OK)
-    findAll(
-      @Query('page') page : number = 1,
-      @Query('limite') limite :  number = 10,
-    ) {
-      return this.usersService.findAll(page,limite);
-    }
-
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
+   
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  async findOne(@Param('id') id: string) {
-    const user = await this.usersService.findOne(id); // Await the promise to get the actual user
-    return new userResponseDTO(user); // Create the response DTO with the resolved user
+  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+    const user = await this.usersService.findOne(id);
+    return new userResponseDTO(user); // Usa PascalCase para el nombre del DTO
   }
+
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  async update(
+    @Param('id', new ParseUUIDPipe()) id: string, // Usa ParseUUIDPipe si 'id' es un UUID
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const updatedUser = await this.usersService.update(id, updateUserDto);
+    return new userResponseDTO(updatedUser); // Opcional: Retorna la respuesta en el formato esperado
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @HttpCode(HttpStatus.OK)
+  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
+    const result = await this.usersService.remove(id);
+    if (!result) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return { message: `User with id ${id} has been removed.` };
   }
 }
