@@ -61,15 +61,7 @@ export class UsersRepository {
         return this.users;
     }
 
-    create(createUserDto: CreateUserDto) {
-        const newUser = {
-            id: this.users.length + 1,
-            ...createUserDto,
-            country: createUserDto.country || 'N/A',  // Si 'country' no se pasa, se puede establecer un valor predeterminado
-        };
-        this.users.push(newUser);
-        return newUser.id;
-    }
+    
 
     findOneByEmail(email: string) {
         return this.users.find(user => user.email === email);

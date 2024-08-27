@@ -1,20 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { SignAuthDto } from './dto/signinup-auth.dto';
-import { request } from 'http';
+import { SignInAuthDto } from './dto/signin-auth.dto';
+import { SignUpAuthDto } from './dto/signup-auth.dto';
+import { Request } from 'express';
+import { userResponseDTO } from 'src/users/dto/response-user.dto';
+import { requiresAuth } from 'express-openid-connect';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
-  singIn(@Body() credentials: SignAuthDto){
+  async singIn(@Body() credentials: SignInAuthDto){
     return this.authService.signIn(credentials)
   }
-  @Post('singup')
-  singUp (@Body()singUpuser: SignAuthDto, @Req()request){
-    return this.authService, singUp(user);
+  @Post('signup')
+  async singUp (@Body()singUpuser: SignUpAuthDto, @Req()request){
+    const user = await this.authService.signUp(singUpuser)
+    return new userResponseDTO(user);
+  }
+  @Get('auth0/protected')
+  getAuth0Protected(@Req() request, requiresAuth){
+    console.log(JSON.stringify(request.oidc));
+    console.log(JSON.stringify(request.oidc.idToken));
+    return JSON.stringify(request.oidc.user)
   }
 }
   

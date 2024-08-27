@@ -18,6 +18,7 @@ import { User } from './users/entities/user.entity';
 import { Category } from './categories/entities/category.entity';
 import { CloudinaryService } from './service/cloudinary/cloudinary.service';
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { SharedModule } from './shared/shared/shared.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { FileUploadModule } from './file-upload/file-upload.module';
     SeedsModule,
     OrdersModule,
     FileUploadModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryService],

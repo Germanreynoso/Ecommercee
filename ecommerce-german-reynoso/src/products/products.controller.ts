@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Put, HttpCode, HttpException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Put, HttpCode, HttpException, HttpStatus, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Multer } from 'multer';
 import { ImageUploadPipe } from 'src/pipes/image/image-upload/image-upload.pipe';
+import { AuthGuard } from 'src/guard/auth.guard';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -59,6 +60,7 @@ export class ProductsController {
   @Post(':id/upload')
   @HttpCode(200)
   @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(AuthGuard)
   async uploadFile(
     @Param('id') id: string,
     @UploadedFile(new ImageUploadPipe()) file: Express.Multer.File,
