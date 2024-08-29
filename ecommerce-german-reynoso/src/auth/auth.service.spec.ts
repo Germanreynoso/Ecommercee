@@ -12,7 +12,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const mockUserService:Partial<UsersService>={ 
-    findoneByEmail: () => Promise.resolve(undefined),
+    findByEmail: () => Promise.resolve(undefined),
     create:(entityLike?: Partial<User>)=>
       Promise.resolve({
         ...entityLike,

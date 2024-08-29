@@ -19,12 +19,17 @@ import { Category } from './categories/entities/category.entity';
 import { CloudinaryService } from './service/cloudinary/cloudinary.service';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { SharedModule } from './shared/shared/shared.module';
+import { sqliteDataSourceConfig } from 'test/users/typeorm-testing-config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath:['.env'],
       isGlobal: true,
-      load: [PostgresDataSourceConfig],
+      load: [PostgresDataSourceConfig, sqliteDataSourceConfig, () => ({
+        enviroment: process.env.enviroment || 'TEST',
+      })
+    ],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

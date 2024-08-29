@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
 
   async signIn(signInUser: SignInAuthDto) {
-    const user = await this.userService.findoneByEmail(signInUser.email);
+    const user = await this.userService.findByEmail(signInUser.email);
     if (!user) {
       throw new HttpException('User not found', 404);
     }

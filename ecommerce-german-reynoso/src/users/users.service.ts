@@ -38,7 +38,7 @@ export class UsersService {
     return result.affected > 0;
   }
 
-  async findoneByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return this.userRepository.findOneBy({ email });
   }
 

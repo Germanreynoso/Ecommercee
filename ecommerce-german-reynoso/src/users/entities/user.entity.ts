@@ -1,9 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Order } from 'src/orders/entities/order.entity';
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+}
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid') // Utiliza 'uuid' para generar un ID único automáticamente
+  @PrimaryGeneratedColumn('uuid') 
   id: string;
 
   @Column()
@@ -22,14 +26,16 @@ export class User {
   city: string;
 
   @Column({nullable: true})
-  address: string; // Agregado
+  address: string; 
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  name: string; // Agregado
+  name: string; 
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
   @Column()
   createdAt: string;
+  @Column({default: Role.User })
+  administrator: string
 }

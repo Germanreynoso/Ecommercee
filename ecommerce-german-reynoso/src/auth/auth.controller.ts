@@ -13,11 +13,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
-  async singIn(@Body() credentials: SignInAuthDto){
+  async signIn(@Body() credentials: SignInAuthDto){
     return this.authService.signIn(credentials)
   }
   @Post('signup')
-  async singUp (@Body()singUpuser: SignUpAuthDto, @Req()request){
+  async signUp (@Body()singUpuser: SignUpAuthDto, @Req()request){
     const user = await this.authService.signUp(singUpuser)
     return new userResponseDTO(user);
   }
