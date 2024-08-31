@@ -1,12 +1,13 @@
+
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Product } from 'src/products/entities/product.entity';  // Asegúrate de que la ruta sea correcta
+import { Product } from 'src/products/entities/product.entity';
 
-@Entity()
+@Entity('categories')
 export class Category {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   name: string;
 
   @OneToMany(() => Product, (product) => product.category)
