@@ -2,14 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { hash } from 'bcrypt';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/entities/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpAuthDto } from './dto/signup-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
-import { userResponseDTO } from 'src/users/dto/response-user.dto';
-import { CreateUserDto } from 'src/users/dto/create-user.dto'; // Ajusta la importación
+import { userResponseDTO } from '../users/dto/response-user.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+
 
 describe('AuthController', () => {
   let controller: AuthController;

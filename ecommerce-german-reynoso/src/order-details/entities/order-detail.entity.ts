@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { Order } from 'src/orders/entities/order.entity';
+import { Order } from '../../orders/entities/order.entity';
 @Entity()
 export class OrderDetail {
   @PrimaryColumn() // Usar cadena de texto como identificador primario

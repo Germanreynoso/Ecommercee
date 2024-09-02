@@ -18,7 +18,7 @@
  import { CloudinaryService } from './service/cloudinary/cloudinary.service';
  import { FileUploadModule } from './file-upload/file-upload.module';
  import { SharedModule } from './shared/shared/shared.module';
- import { sqliteDataSourceConfig } from 'test/users/typeorm-testing-config';
+ import { sqliteDataSourceConfig } from '../test/users/typeorm-testing-config';
  import { CloudinaryModule } from './service/cloudinary/clodinary-module';
  import { AdminModule } from './admin/admin.module';
 

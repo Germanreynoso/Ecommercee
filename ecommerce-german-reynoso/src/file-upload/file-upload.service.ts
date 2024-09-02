@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CloudinaryService } from 'src/service/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../service/cloudinary/cloudinary.service';
 import { CreateFileUploadDto } from './dto/create-file-upload.dto';
 import { UploadFileDto } from './dto/upload-file.dto';
 

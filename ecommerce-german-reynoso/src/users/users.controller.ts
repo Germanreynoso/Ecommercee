@@ -3,11 +3,11 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { userResponseDTO } from './dto/response-user.dto';
-import { AuthGuard } from 'src/guard/auth.guard';
+import { AuthGuard } from '../guard/auth.guard';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Req } from '@nestjs/common';
-import { DateAdderInterceptor } from 'src/interceptors/date-adder.interceptors';
+import { DateAdderInterceptor } from '../interceptors/date-adder.interceptors';
 
 @ApiBearerAuth()
 @ApiTags('users')

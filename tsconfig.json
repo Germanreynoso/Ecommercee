@@ -28,6 +28,7 @@
       "@pipes/*": ["pipes/*"],
       "@service/*": ["service/*"],
       "@shared/*": ["shared/*"]
-    }
+    },
+    "types": ["jest"]
   }
 }

@@ -3,8 +3,8 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageUploadPipe } from 'src/pipes/image/image-upload/image-upload.pipe';
-import { AuthGuard } from 'src/guard/auth.guard';
+import { ImageUploadPipe } from '../pipes/image/image-upload/image-upload.pipe';
+import { AuthGuard } from '../guard/auth.guard';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @ApiTags('products')

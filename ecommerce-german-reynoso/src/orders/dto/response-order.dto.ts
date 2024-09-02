@@ -1,4 +1,4 @@
-import { OrderDetail } from "src/order-details/entities/order-detail.entity";
+import { OrderDetail } from "../../order-details/entities/order-detail.entity";
 export class OrderResponseDto{
     id: string;
     price: number;

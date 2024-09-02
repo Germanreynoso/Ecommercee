@@ -2,8 +2,8 @@ import { Controller, Post, Body, Param, UploadedFile, UseInterceptors, Get, Patc
 import { FileUploadService } from './file-upload.service';
 import { CreateFileUploadDto } from './dto/create-file-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageValidationPipe } from 'src/pipes/image/image-validation.pipe';
-import { ValidationPipe } from 'src/pipes/validation.pipes';
+import { ImageValidationPipe } from '../pipes/image/image-validation.pipe';
+import { ValidationPipe } from '../pipes/validation.pipes';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { UsePipes } from '@nestjs/common';
 
