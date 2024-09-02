@@ -76,7 +76,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  createdAt?: Date;
+  createdAt?: string;
 
 }
   

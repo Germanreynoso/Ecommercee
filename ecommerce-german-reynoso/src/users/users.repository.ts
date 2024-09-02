@@ -87,4 +87,5 @@ export class UsersRepository {
         this.users = this.users.map(user => user.id === id ? updatedUser : user);
         return updatedUser;
     }
+    
 }

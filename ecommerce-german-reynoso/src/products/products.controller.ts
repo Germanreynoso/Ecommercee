@@ -6,7 +6,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadPipe } from '../pipes/image/image-upload/image-upload.pipe';
 import { AuthGuard } from '../guard/auth.guard';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {

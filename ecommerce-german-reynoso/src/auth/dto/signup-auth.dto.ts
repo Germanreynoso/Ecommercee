@@ -38,7 +38,7 @@ export class SignUpAuthDto{
 
   @IsString()
   @IsOptional()
-  createdAt: Date;
+  createdAt: string;
   @IsString()
   @IsOptional()
   role?: Role;

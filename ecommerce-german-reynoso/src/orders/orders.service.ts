@@ -1,12 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateOrderDto, ProductIdDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { ProductsService } from '../products/products.service';
 import { OrderDetailsService } from '../order-details/order-details.service';
 import { Order } from './entities/order.entity';
+import { CreateOrderDto, ProductIdDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 import { CreateOrderDetailDto } from '../order-details/dto/create-order-detail.dto';
 import { OrderResponseDto } from './dto/response-order.dto';
 
@@ -23,25 +23,32 @@ export class OrdersService {
 
   async create(createOrderDto: CreateOrderDto) {
     const { userId, products } = createOrderDto;
+    
+    // Check if user exists
     const user = await this.userService.findOne(userId);
-
     if (!user) {
-      throw new Error(`User with id ${userId} not found.`);
+      throw new HttpException(`User with id ${userId} not found.`, HttpStatus.BAD_REQUEST);
     }
 
+    // Create a new order
     const order = this.orderRepository.create({
       user: user,
       date: new Date(),
     });
 
+    // Save the order
     const orderEntity = await this.orderRepository.save(order);
+    
+    // Calculate total price
     const total = await this.calculateTotal(products);
 
+    // Prepare and create order details
     const orderDetail = new CreateOrderDetailDto();
     orderDetail.price = total;
     orderDetail.products = products;
     orderDetail.order = orderEntity;
 
+    // Save order details
     const orderDetailEntity = await this.orderDetailsService.create(orderDetail);
     return new OrderResponseDto(orderDetailEntity);
   }
@@ -67,7 +74,7 @@ export class OrdersService {
     });
 
     if (!order) {
-      throw new Error(`Order with id ${id} not found.`);
+      throw new HttpException(`Order with id ${id} not found.`, HttpStatus.NOT_FOUND);
     }
 
     const orderDetail = await this.orderDetailsService.findOneByOrderId(order.id, ['products', 'order']);
@@ -78,7 +85,7 @@ export class OrdersService {
     const result = await this.orderRepository.update(id, updateOrderDto);
 
     if (result.affected === 0) {
-      throw new Error(`Order with id ${id} not found.`);
+      throw new HttpException(`Order with id ${id} not found.`, HttpStatus.NOT_FOUND);
     }
 
     const updatedOrder = await this.findOne(id);
@@ -93,7 +100,7 @@ export class OrdersService {
       await this.orderRepository.delete(id);
       return { message: `Order with id ${id} has been removed.` };
     } else {
-      throw new Error(`Order with id ${id} not found.`);
+      throw new HttpException(`Order with id ${id} not found.`, HttpStatus.NOT_FOUND);
     }
   }
 }
