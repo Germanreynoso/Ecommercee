@@ -83,7 +83,7 @@ export class ProductsController {
     const product = await this.productsService.findOne(id);
     if (!product) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
-    }
+    };
     await this.productsService.remove(id);
     return { message: `Product with id ${id} has been removed.` };
   }
