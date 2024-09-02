@@ -27,6 +27,7 @@ export class UsersService {
     return this.userRepository.save(newUser);
   }
 
+  
   async findAll(page: number, limit: number): Promise<User[]> {
     return this.userRepository.find({
       take: limit,
