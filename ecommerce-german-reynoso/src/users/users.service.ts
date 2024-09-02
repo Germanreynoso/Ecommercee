@@ -61,5 +61,5 @@ export class UsersService {
     const updatedUser = await this.userRepository.findOneBy({ id });
     
     return new userResponseDTO(updatedUser);
-  }
+  };
 }
