@@ -6,9 +6,11 @@ export class SignInAuthDto {
   email: string;
 
   @IsNotEmpty()
+  @IsString()
+  @MinLength(8)
   password: string;
 
-  constructor(partial: Partial<SignInAuthDto>){
-    Object.assign(this, partial)
+  constructor(partial: Partial<SignInAuthDto>) {
+    Object.assign(this, partial);
   }
 }

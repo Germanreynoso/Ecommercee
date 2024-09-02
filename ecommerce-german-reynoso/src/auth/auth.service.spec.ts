@@ -43,7 +43,6 @@ describe('AuthService', () => {
   });
   const mockUser = new SignUpAuthDto({
     name: 'German Reynoso',
-    createdAt: '27/08/2024',
     password: 'German37997873.',
     passwordConfirm: 'German37997873.',
     email: 'germanreynoso94@gmail.com',

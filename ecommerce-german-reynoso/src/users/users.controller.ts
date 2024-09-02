@@ -49,4 +49,11 @@ export class UsersController {
     }
     return { message: `User with id ${id} has been removed.` };
   }
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  async findAll(@Query('page') page: number, @Query('limit') limit: number) {
+    const users = await this.usersService.findAll(page, limit);
+    return users.map(user => new userResponseDTO(user));
+  }
 }

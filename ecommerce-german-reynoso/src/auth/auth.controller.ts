@@ -1,31 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignInAuthDto } from './dto/signin-auth.dto';
 import { SignUpAuthDto } from './dto/signup-auth.dto';
 import { Request } from 'express';
 import { userResponseDTO } from 'src/users/dto/response-user.dto';
-import { requiresAuth } from 'express-openid-connect';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
-  async signIn(@Body() credentials: SignInAuthDto){
-    return this.authService.signIn(credentials)
+  @ApiOperation({ summary: 'Sign in a user' })
+  @ApiBody({ type: SignInAuthDto })
+  @ApiResponse({ status: 200, description: 'User successfully signed in.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  async signIn(@Body() credentials: SignInAuthDto) {
+    return this.authService.signIn(credentials);
   }
+
   @Post('signup')
-  async signUp (@Body()singUpuser: SignUpAuthDto, @Req()request){
-    const user = await this.authService.signUp(singUpuser)
+  @ApiOperation({ summary: 'Sign up a new user' })
+  @ApiBody({ type: SignUpAuthDto })
+  @ApiResponse({ status: 201, description: 'User successfully signed up.', type: userResponseDTO })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
+  async signUp(@Body() signUpUser: SignUpAuthDto, @Req() request: Request) {
+    const user = await this.authService.signUp(signUpUser);
     return new userResponseDTO(user);
   }
+
   @Get('auth0/protected')
-  getAuth0Protected(@Req() request, requiresAuth){
+  @ApiOperation({ summary: 'Get Auth0 protected user information' })
+  @ApiResponse({ status: 200, description: 'Protected user information retrieved.' })
+  getAuth0Protected(@Req() request: Request) {
     console.log(JSON.stringify(request.oidc));
     console.log(JSON.stringify(request.oidc.idToken));
-    return JSON.stringify(request.oidc.user)
+    return JSON.stringify(request.oidc.user);
   }
 }
-  

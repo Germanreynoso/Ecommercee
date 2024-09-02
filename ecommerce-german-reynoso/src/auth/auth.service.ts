@@ -4,7 +4,8 @@ import { SignInAuthDto } from './dto/signin-auth.dto';
 import { SignUpAuthDto } from './dto/signup-auth.dto';
 import { User } from 'src/users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { hash, compare } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import { Role } from './roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -15,15 +16,22 @@ export class AuthService {
 
   async signIn(signInUser: SignInAuthDto) {
     const user = await this.userService.findByEmail(signInUser.email);
+    
     if (!user) {
       throw new HttpException('User not found', 404);
     }
-
-    const isPasswordMatching = await compare(signInUser.password, user.password);
+  
+    console.log('User from DB:', user);
+    console.log('Password from request:', signInUser.password);
+    console.log('Password from DB:', user.password);
+  
+    const isPasswordMatching = await bcrypt.compare(signInUser.password, user.password);
+    console.log('Password matching:', isPasswordMatching);
+  
     if (!isPasswordMatching) {
       throw new HttpException('Wrong credentials provided', 400);
     }
-
+  
     const token = await this.createToken(user);
     return { token };
   }
@@ -32,8 +40,11 @@ export class AuthService {
     if (signUpUser.password !== signUpUser.passwordConfirm) {
       throw new HttpException('Passwords do not match', 400);
     }
-
-    signUpUser.password = await hash(signUpUser.password, 10);
+  
+    const hashedPassword = await bcrypt.hash(signUpUser.password, 10);
+    signUpUser.password = hashedPassword;
+    signUpUser.role = Role.User;
+  
     return this.userService.create(signUpUser);
   }
 

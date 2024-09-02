@@ -1,19 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { Order } from 'src/orders/entities/order.entity';
-import { Product } from 'src/products/entities/product.entity';
-
-@Entity('order_details')
+@Entity()
 export class OrderDetail {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn() // Usar cadena de texto como identificador primario
+  id: string; // Identificador de tipo string
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal')
   price: number;
 
-  @ManyToOne(() => Order, (order) => order.details)
-  order: Order;
+  @Column('json') // Asegúrate de que este tipo sea compatible con la estructura de productos
+  products: object[];
 
-  @ManyToMany(() => Product, (product) => product.orderDetails)
-  @JoinTable() // Esto crea la tabla de unión para la relación muchos a muchos
-  products: Product[];
+  @ManyToOne(() => Order, (order) => order.details)
+  order: Order; // Relación con Order
 }

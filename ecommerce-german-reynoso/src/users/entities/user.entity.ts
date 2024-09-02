@@ -1,5 +1,4 @@
-
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn } from 'typeorm';
 import { Order } from 'src/orders/entities/order.entity';
 
 export enum Role {
@@ -7,36 +6,36 @@ export enum Role {
   Admin = 'admin',
 }
 
-@Entity('users')
+@Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid') 
   id: string;
 
-  @Column({ type: 'varchar', length: 50, unique: true })
+  @Column()
   email: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column()
   password: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: true })
-  phone?: string;
+  @Column()
+  phone: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  country?: string;
+  @Column({ nullable: true })
+  country: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  city?: string;
+  @Column({ nullable: true })
+  city: string;
 
-  @Column({ type: 'text', nullable: true })
-  address?: string; 
+  @Column({ nullable: true })
+  address: string; 
 
-  @Column({ type: 'varchar', length: 50 })
-  name: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  name: string; 
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @Column({ type: 'enum', enum: Role, default: Role.User })

@@ -1,59 +1,86 @@
 export const productsMock = [
-    {
-      name: 'iPhone 14',
-      description: 'The latest smartphone from Apple with advanced features and improved performance.',
-      price: 999.99,
-      stock: 50,
-      category: 'smartphone',
-    },
-    {
-      name: 'Samsung Galaxy S23',
-      description: 'A powerful smartphone with cutting-edge technology from Samsung.',
-      price: 899.99,
-      stock: 30,
-      category: 'smartphone',
-    },
-    {
-      name: 'Logitech MX Master 3',
-      description: 'A high-performance wireless mouse with customizable buttons and ergonomic design.',
-      price: 99.99,
-      stock: 100,
-      category: 'mouse',
-    },
-    {
-      name: 'Razer DeathAdder V2',
-      description: 'An ultra-precise gaming mouse with RGB lighting and customizable DPI settings.',
-      price: 59.99,
-      stock: 80,
-      category: 'mouse',
-    },
-    {
-      name: 'Dell UltraSharp 27',
-      description: 'A high-resolution 27-inch monitor with excellent color accuracy and slim design.',
-      price: 499.99,
-      stock: 20,
-      category: 'monitor',
-    },
-    {
-      name: 'Samsung Odyssey G7',
-      description: 'A curved gaming monitor with a high refresh rate and immersive experience.',
-      price: 699.99,
-      stock: 15,
-      category: 'monitor',
-    },
-    {
-      name: 'Corsair K95 RGB Platinum',
-      description: 'A mechanical keyboard with customizable RGB lighting and dedicated macro keys.',
-      price: 199.99,
-      stock: 60,
-      category: 'keyboard',
-    },
-    {
-      name: 'Logitech G Pro X',
-      description: 'A compact mechanical gaming keyboard with swappable switches and advanced features.',
-      price: 149.99,
-      stock: 40,
-      category: 'keyboard',
-    },
-  ];
-  
+  {
+    "name": "Iphone 15",
+    "description": "The best smartphone in the world",
+    "price": 199.99,
+    "stock": 12,
+    "category": "smartphone"
+  },
+  {
+    "name": "Samsung Galaxy S23",
+    "description": "The best smartphone in the world",
+    "price": 150.0,
+    "stock": 12,
+    "category": "smartphone"
+  },
+  {
+    "name": "Motorola Edge 40",
+    "description": "The best smartphone in the world",
+    "price": 179.89,
+    "stock": 12,
+    "category": "smartphone"
+  },
+  {
+    "name": "Samsung Odyssey G9",
+    "description": "The best monitor in the world",
+    "price": 299.99,
+    "stock": 12,
+    "category": "monitor"
+  },
+  {
+    "name": "LG UltraGear",
+    "description": "The best monitor in the world",
+    "price": 199.99,
+    "stock": 12,
+    "category": "monitor"
+  },
+  {
+    "name": "Acer Predator",
+    "description": "The best monitor in the world",
+    "price": 150.0,
+    "stock": 12,
+    "category": "monitor"
+  },
+  {
+    "name": "Razer BlackWidow V3",
+    "description": "The best keyboard in the world",
+    "price": 99.99,
+    "stock": 12,
+    "category": "keyboard"
+  },
+  {
+    "name": "Corsair K70",
+    "description": "The best keyboard in the world",
+    "price": 79.99,
+    "stock": 12,
+    "category": "keyboard"
+  },
+  {
+    "name": "Logitech G Pro",
+    "description": "The best keyboard in the world",
+    "price": 59.99,
+    "stock": 12,
+    "category": "keyboard"
+  },
+  {
+    "name": "Razer Viper",
+    "description": "The best mouse in the world",
+    "price": 49.99,
+    "stock": 12,
+    "category": "mouse"
+  },
+  {
+    "name": "Logitech G502 Pro",
+    "description": "The best mouse in the world",
+    "price": 39.99,
+    "stock": 12,
+    "category": "mouse"
+  },
+  {
+    "name": "SteelSeries Rival 3",
+    "description": "The best mouse in the world",
+    "price": 29.99,
+    "stock": 12,
+    "category": "mouse"
+  }
+];

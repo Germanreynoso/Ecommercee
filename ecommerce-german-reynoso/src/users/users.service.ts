@@ -1,20 +1,29 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { userResponseDTO } from './dto/response-user.dto'; // Asegúrate de que este archivo exporte `userResponseDTO`
+import { userResponseDTO } from './dto/response-user.dto';
+import { Role } from 'src/auth/roles.enum';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  private readonly saltRounds = 10;
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(createUserDto);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, this.saltRounds);
+    const newUser = this.userRepository.create({
+      ...createUserDto,
+      password: hashedPassword,
+      role: Role.User,
+    });
     return this.userRepository.save(newUser);
   }
 
@@ -24,67 +33,32 @@ export class UsersService {
       skip: (page - 1) * limit,
     });
   }
-  async findOne(id: string): Promise<userResponseDTO> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: ['orders'], // Asegúrate de cargar la relación con órdenes
-    });
 
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    // Map the orders to include only id and date
-    const orders = user.orders.map(order => ({
-      id: order.id,
-      date: order.date,
-    }));
-
-    return new userResponseDTO({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      address: user.address,
-      phone: user.phone,
-      country: user.country,
-      city: user.city,
-      orders,
-    });
+  async findOne(id: string): Promise<User> {
+    return this.userRepository.findOneBy({ id });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const result = await this.userRepository.update(id, updateUserDto);
-    if (result.affected === 0) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
+    await this.userRepository.update(id, updateUserDto);
     return this.userRepository.findOneBy({ id });
   }
 
   async remove(id: string): Promise<boolean> {
     const result = await this.userRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-    return true;
+    return result.affected > 0;
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({ email });
-    if (!user) {
-      throw new NotFoundException(`User with email ${email} not found`);
-    }
-    return user;
+    return this.userRepository.findOneBy({ email });
   }
 
   async updateUser(
     id: string,
     updateUserDto: UpdateUserDto,
   ): Promise<userResponseDTO> {
-    const result = await this.userRepository.update(id, updateUserDto);
-    if (result.affected === 0) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
+    await this.userRepository.update(id, updateUserDto);
     const updatedUser = await this.userRepository.findOneBy({ id });
+    
     return new userResponseDTO(updatedUser);
   }
 }

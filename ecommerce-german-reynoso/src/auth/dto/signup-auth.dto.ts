@@ -1,4 +1,5 @@
 import { IsEmail, isNotEmpty, IsNotEmpty, IsNumber, IsOptional, isString, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { Role } from "../roles.enum";
 
 export class SignUpAuthDto{
   @MaxLength(80)
@@ -37,7 +38,10 @@ export class SignUpAuthDto{
 
   @IsString()
   @IsOptional()
-  createdAt: string;
+  createdAt: Date;
+  @IsString()
+  @IsOptional()
+  role?: Role;
 
   constructor(partial: Partial<SignUpAuthDto>){
     Object.assign(this, partial)

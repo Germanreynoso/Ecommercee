@@ -1,52 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriesRepository } from './category.repository';
+import { Repository } from 'typeorm';
+import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
-    private readonly categoriesRepository: CategoriesRepository,
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async seedCategories(): Promise<void> {
-    const existingCategories = await this.categoriesRepository.getCategories();
-    const categoryNames = new Set(existingCategories.map(cat => cat.name));
-
-    const categoriesData = [
-      { name: 'Electronics' },
-      { name: 'Books' },
-      { name: 'Clothing' },
-      // Más categorías según sea necesario
-    ];
-
-    for (const category of categoriesData) {
-      if (!categoryNames.has(category.name)) {
-        await this.categoriesRepository.addCategory(category);
-      }
-    }
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
+    const category = this.categoryRepository.create(createCategoryDto);
+    return this.categoryRepository.save(category);
   }
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return this.categoriesRepository.addCategory(createCategoryDto);
+  async findAll(): Promise<Category[]> {
+    return this.categoryRepository.find();
   }
 
-  findAll() {
-    return this.categoriesRepository.getCategories();
+  async findOne(id: string): Promise<Category | null> {
+    return this.categoryRepository.findOne({
+      where: { id },
+    });
   }
 
-  findOne(id: string) {
-    return this.categoriesRepository.findOneById(id);
+  async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<Category | null> {
+    await this.categoryRepository.update(id, updateCategoryDto);
+    return this.categoryRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    return this.categoriesRepository.update(id, updateCategoryDto);
-  }
-
-  remove(id: string) {
-    return this.categoriesRepository.delete(id);
+  async remove(id: string): Promise<void> {
+    await this.categoryRepository.delete(id);
   }
 }
