@@ -17,11 +17,11 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+ 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, this.saltRounds);
+    // Eliminar el hash de la contraseña aquí
     const newUser = this.userRepository.create({
       ...createUserDto,
-      password: hashedPassword,
       role: Role.User,
     });
     return this.userRepository.save(newUser);
